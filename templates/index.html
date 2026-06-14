@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>AI Text Analyzer</title>
+        <!-- <script src="https://cdn.tailwindcss.com"></script> -->
+        <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    </head>
+
+    <body class="bg-gray-950 text-white">
+
+        <!-- NAVBAR -->
+        <nav class="flex justify-between items-center px-10 py-6 bg-gray-900 shadow-lg">
+            <h1 class="text-2xl font-bold text-indigo-400">ClearText AI</h1>
+            <div class="space-x-6 text-gray-300">
+                <a href="#" class="hover:text-white">Home</a>
+                <a href="#analyzer" class="hover:text-white">Features</a>
+                <a href="#" class="hover:text-white">Contact</a>
+            </div>
+        </nav>
+
+        <!-- HERO SECTION -->
+        <section class="text-center py-20 px-6 bg-gradient-to-br from-indigo-600 via-purple-600 to-pink-600">
+            <h2 class="text-5xl font-extrabold mb-6 leading-tight">
+                Advanced AI Text Analysis
+            </h2>
+            <p class="text-xl text-gray-200 mb-8">
+                Check plagiarism, fix grammar, and rephrase content instantly with powerful AI.
+            </p>
+            <a href="#analyzer" class="bg-white text-indigo-600 px-8 py-3 rounded-full font-semibold hover:scale-105 transition">
+                Start Analyzing
+            </a>
+        </section>
+
+        <!-- ANALYZER SECTION -->
+        <section id="analyzer" class="py-20 px-6 bg-gray-950">
+
+            <div class="max-w-4xl mx-auto bg-white/10 backdrop-blur-lg p-10 rounded-3xl shadow-2xl border border-white/20">
+
+                <h3 class="text-3xl font-bold text-center mb-8 text-white">
+                    Analyze Your Text
+                </h3>
+
+                <form action="/analyse" method="POST" enctype="multipart/form-data">
+
+                    <!-- Upload -->
+                    <div class="mb-6">
+                        <label class="block mb-2 text-gray-300 font-semibold">
+                            Upload File (.txt, .pdf)
+                        </label>
+
+                        <div class="flex items-center gap-4">
+                            <input type="file" 
+                                name="file" 
+                                id="fileInput"
+                                accept=".txt,.pdf"
+                                class="w-full p-3 rounded-lg bg-gray-800 text-white border border-gray-700"
+                            >
+
+                            <button type="button" id="removeFileBtn" class="hidden bg-red-600 hover:bg-red-700 px-4 py-2 rounded-lg text-white font-semibold">
+                                Cancel
+                            </button>
+                        </div>
+
+                        <p id="fileName" class="text-green-400 mt-2 hidden"></p>
+                        <p id="fileError" class="text-red-400 mt-2 hidden"></p>
+                    </div>
+
+                    <div class="text-center text-gray-400 mb-4 font-semibold">OR</div>
+
+                    <!-- Textarea -->
+                    <div class="mb-8">
+                        <textarea name="text" rows="6"
+                            class="w-full p-4 rounded-xl bg-gray-800 border border-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                            placeholder="Paste or write your content here..."></textarea>
+                    </div>
+
+                    <!-- Buttons -->
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+
+                        <button type="submit" name="action" value="plagiarism"
+                            class="action-btn bg-indigo-600 hover:bg-indigo-700 py-3 rounded-xl font-semibold transition">
+                            Plagiarism
+                        </button>
+
+                        <button type="submit" name="action" value="grammar"
+                            class="action-btn bg-indigo-600 hover:bg-indigo-700 py-3 rounded-xl font-semibold transition">
+                            Grammar
+                        </button>
+
+                        <button type="submit" name="action" value="rephrase"
+                            class="action-btn bg-indigo-600 hover:bg-indigo-700 py-3 rounded-xl font-semibold transition">
+                            Rephrase
+                        </button>
+
+                        <button type="submit" name="action" value="all"
+                            class="action-btn bg-indigo-600 hover:bg-indigo-700 py-3 rounded-xl font-semibold transition">
+                            Analyse All
+                        </button>
+
+                    </div>
+
+                </form>
+
+            </div>
+
+        </section>
+
+        <!-- FEATURES SECTION -->
+        <section class="py-20 px-6 bg-gray-900">
+            <div class="max-w-6xl mx-auto grid md:grid-cols-3 gap-10">
+
+                <div class="bg-gray-800 p-8 rounded-2xl shadow-lg hover:scale-105 transition">
+                    <h4 class="text-xl font-bold mb-4 text-indigo-400">Plagiarism Detection</h4>
+                    <p class="text-gray-400">
+                        Advanced similarity checking to detect copied content and ensure originality.
+                    </p>
+                </div>
+
+                <div class="bg-gray-800 p-8 rounded-2xl shadow-lg hover:scale-105 transition">
+                    <h4 class="text-xl font-bold mb-4 text-blue-400">Grammar Correction</h4>
+                    <p class="text-gray-400">
+                        AI-powered grammar suggestions to improve writing clarity and professionalism.
+                    </p>
+                </div>
+
+                <div class="bg-gray-800 p-8 rounded-2xl shadow-lg hover:scale-105 transition">
+                    <h4 class="text-xl font-bold mb-4 text-green-400">Smart Rephrasing</h4>
+                    <p class="text-gray-400">
+                        Instantly rewrite sentences to improve readability and uniqueness.
+                    </p>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- FOOTER -->
+        <footer class="text-center py-6 bg-gray-950 text-gray-500">
+            © 2026 ClearText AI. All rights reserved.
+        </footer>
+
+        <!-- Loader -->
+        <div id="loader" class="fixed inset-0 bg-gray-900 bg-opacity-95 flex flex-col items-center justify-center hidden z-50">
+            <div class="text-center">
+                <div class="animate-spin rounded-full h-20 w-20 border-t-4 border-indigo-500 border-solid mx-auto mb-6"></div>
+                <h2 class="text-white text-xl font-semibold mb-2">
+                    Analyzing your text...
+                </h2>
+                <div class="w-64 bg-gray-700 rounded-full h-3 mb-2">
+                    <div id="progressBar" 
+                        class="bg-indigo-500 h-3 rounded-full transition-all duration-300"
+                        style="width: 0%">
+                    </div>
+                </div>
+                <p id="progressText" class="text-gray-300 text-sm">
+                    0%
+                </p>
+            </div>
+        </div>
+        <!-- script -->
+        <script>
+            const fileInput = document.getElementById("fileInput");
+            const textArea = document.querySelector('textarea[name="text"]');
+            const removeBtn = document.getElementById("removeFileBtn");
+            const fileNameText = document.getElementById("fileName");
+            const fileError = document.getElementById("fileError");
+
+            const allowedExtensions = ["txt", "pdf"];
+
+            fileInput.addEventListener("change", function () {
+
+                fileError.classList.add("hidden");
+                fileNameText.classList.add("hidden");
+
+                if (fileInput.files.length === 0) return;
+
+                const file = fileInput.files[0];
+                const fileName = file.name;
+                const extension = fileName.split(".").pop().toLowerCase();
+
+                // ❌ If wrong file type
+                if (!allowedExtensions.includes(extension)) {
+                    fileInput.value = "";
+                    fileError.textContent = "Only .txt and .pdf files are allowed!";
+                    fileError.classList.remove("hidden");
+
+                    textArea.disabled = false;
+                    removeBtn.classList.add("hidden");
+                    return;
+                }
+
+                // ✅ Valid file
+                textArea.disabled = true;
+                textArea.value = "";
+                textArea.placeholder = "Text area disabled because file is uploaded.";
+
+                fileNameText.textContent = "Selected File: " + fileName;
+                fileNameText.classList.remove("hidden");
+
+                removeBtn.classList.remove("hidden");
+            });
+
+            removeBtn.addEventListener("click", function () {
+                fileInput.value = "";
+                textArea.disabled = false;
+                textArea.placeholder = "Paste or write your content here...";
+
+                fileNameText.classList.add("hidden");
+                fileError.classList.add("hidden");
+                removeBtn.classList.add("hidden");
+            });
+
+            document.addEventListener("DOMContentLoaded", function(){
+                const loader = document.getElementById("loader")
+                const buttons = document.querySelectorAll(".action-btn")
+                const progressBar = document.getElementById("progressBar")
+                const progressText = document.getElementById("progressText")
+                let progress = 0
+                buttons.forEach(button => {
+                    button.addEventListener("click", function(){
+                        loader.classList.remove("hidden")
+                        progress = 0
+                        const interval = setInterval(() => {
+                            progress += Math.random() * 10
+                            if(progress >= 95){
+                                progress = 95
+                                clearInterval(interval)
+                            }
+                            progressBar.style.width = progress + "%"
+                            progressText.innerText = Math.floor(progress) + "%"
+
+                        }, 300)
+                    })
+                })
+            })
+        </script>
+        
+    </body>
+</html>

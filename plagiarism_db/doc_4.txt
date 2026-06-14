@@ -1,0 +1,48 @@
+Tiyasha Ghosh      
+LinkedIn ,  View My Portfolio                    Email: tiyashaghosh1990@gmail.com | Mobile: 7044647641  
+Python Full Stack Developer    
+A motivated Computer Science student with a solid foundation in web development technologies like HTML /CSS, Java Script , and 
+programming knowledge of C/C++ , Java  and Python . Looking to contribute to a dynamic team while further developing skills in 
+software development and problem -solving.  
+  
+TECHNICAL SKILLS    
+Languages  : Html/CSS, Java Script , C/C++, Python , Java  
+Frameworks  : ReactJS, Django  
+Databases  :   MYSQL  
+Dev Tools  :  Visual  Studio  Code,  Git 
+Other   :    Data Structure and Algorithm  
+EDUCATION    
+Binodini Girls High School –10th (86.28%)                                                       Aug 2017 – Jul 2018  
+Binodini Girls High School –12th (86%)                                                            Aug 2019 – Jul 2020  
+University Of Calcutta – B.Sc in Physics (8.24 CGPA)             Sept  2020 – Jul 2023  
+Sister Nivedita University , Kolkata  – MCA ( 9.00 CGPA)                                              Aug 2024 – Present  
+  
+EXPERIENCE    
+ Python Dev Intern at Infosys | Springboard 6.0  2025  [Html, CSS, JavaScript, Python, Django, Git]        Sep 2025 – Nov 2025  
+ [Github]  
+• Developed a Pet Rescue Web Application  to manage pet registration, rescue operations, and adoption workflows.  
+• Built the backend using Django and Django REST Framework , implementing secure user authentication and role -based 
+access (Admin, User).  
+• Created a n admin dashboard  for viewing adoption statistics and pet data visualization.  
+• Integrated REST APIs between Django backend and frontend for real -time data interaction.  
+• Used MySQL  as database and Git/GitHub  for version control.  
+ 
+PROJECTS    
+ WeatherApp [Html, CSS, JavaScript, Git] – [Github ] 
+• Added smooth animations and visual effects to enhance interactivity and overall user experience.  
+• Developed a responsive weather application using HTML, CSS, and JavaScript with a focus on clean UI and user -friendly 
+design.  
+• Integrated a Weather Forecast API to display real -time weather data such as temperature, humidity, and wind speed 
+based on user input.  
+FunnGames  [Html/CSS, JavaScript] – [Link] [Github ] 
+• Created a responsive and lightweight web platform called FunnGames , offering a collection of simple, interactive 
+browser -based games built using core web technologies.  
+• Implemented DOM manipulation, event handling, and basic game logic without relying on external libraries or 
+frameworks.  
+• Games include classics like Tic -Tac-Toe, Rock Paper Scissors.  
+Certification & Achievements    
+• Python  for Everybody  | Coursera - Link  
+• Introduction to Networking and Cloud Computing | Coursera - Link 
+• Google Project Management | Coursera - Link 
+• Programming in C | Coursera - Link 
+• Dynamic Programming, Greedy Algorithms | Coursera - Link  

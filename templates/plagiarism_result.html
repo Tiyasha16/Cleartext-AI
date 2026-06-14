@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Plagiarism Result</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+
+<body class="bg-gray-900 text-white min-h-screen p-10">
+
+    <h1 class="text-4xl text-center text-red-400 mb-10">
+        Plagiarism Score: {{ plagiarism_percent }}%
+    </h1>
+
+    <div class="max-w-4xl mx-auto">
+
+        {% for sentence, score in plag_sentences %}
+        <div class="bg-gray-800 p-4 mb-4 rounded-xl">
+            <p class="text-yellow-300">{{ sentence }}</p>
+            <p class="text-red-400">Similarity: {{ (score*100)|round(2) }}%</p>
+        </div>
+        {% endfor %}
+
+    </div>
+
+    <div class="text-center mt-10">
+        <a href="/" class="bg-indigo-600 px-6 py-2 rounded-xl">
+            Back to Home
+        </a>
+    </div>
+    <script>
+        window.onload = function(){
+            const loader = document.getElementById("loader")
+            if(loader){
+                loader.style.display = "none"
+            }
+        }
+    </script>
+</body>
+</html>

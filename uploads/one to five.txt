@@ -1,0 +1,235 @@
+Space and Move-Optimal Arbitrary Pattern
+Formation on Infinite Rectangular Grid by
+Oblivious Robot Swarm
+Avisek Sharma #
+Department of Mathematics, Jadavpur University, India
+Satakshi Ghosh #
+Department of Mathematics, Jadavpur University, India
+Pritam Goswami #
+Department of Mathematics, Jadavpur University, India
+Buddhadeb Sau #
+Department of Mathematics, Jadavpur University, India
+Abstract
+Arbitrary Pattern Formation (APF) is a fundamental coordination problem in swarm robotics. It
+requires a set of autonomous robots (mobile computing units) to form an arbitrary pattern (given as
+input) starting from any initial pattern. This problem has been extensively investigated in continuous
+and discrete scenarios, with this study focusing on the discrete variant. A set of robots is placed on
+the nodes of an infinite rectangular grid graph embedded in the euclidean plane. The movements of
+each robot is restricted to one of the four neighboring grid nodes from its current position. The robots
+are autonomous, anonymous, identical, and homogeneous, and operate Look-Compute-Move cycles.
+In this work, we adopt the classical OBLOT robot model, meaning the robots have no persistent
+memory or explicit communication methods, yet they possess full and unobstructed visibility. This
+work proposes an algorithm that solves the APF problem in a fully asynchronous scheduler assuming
+the initial configuration is asymmetric. The considered performance measures of the algorithm are
+space and number of moves required for the robots. The algorithm is asymptotically move-optimal.
+Here, we provide a definition of space complexity that takes the visibility issue into consideration.
+We observe an obvious lower bound D of the space complexity and show that the proposed algorithm
+has the space complexity D + 4. On comparing with previous related works, we show that this is
+the first proposed algorithm considering OBLOT robot model that is asymptotically move-optimal
+and has the least space complexity which is almost optimal.
+2012 ACM Subject Classification Theory of computation → Distributed algorithms
+Keywords and phrases Distributed algorithms, Oblivious robots, Optimal algorithms, Swarm
+robotics, Space optimization, and Rectangular grid
+Digital Object Identifier 10.4230/LIPIcs.SAND.2024.20
+Related Version Full Version: https://doi.org/10.48550/arXiv.2309.11190 [14]
+Funding The first and the third authors are supported by the University Grants Commission (UGC),
+India. The second author is supported by the West Bengal State Government Fellowship Scheme.
+The fourth author is supported by the Science and Engineering Research Board (SERB), India
+1 Introduction
+Swarm robotics involves a group of simple computing units referred to as robots that operate
+autonomously without having any centralized control. Moreover, the robots are generally
+anonymous (no unique identifier), homogeneous (all robots execute the same algorithm), and
+identical (physically indistinguishable). Generally on activation, a robot first takes a snapshot
+of its surroundings. This phase is called the Look phase. Then based on the snapshot an
+© Avisek Sharma, Satakshi Ghosh, Pritam Goswami, and Buddhadeb Sau;
+licensed under Creative Commons License CC-BY 4.0
+3rd Symposium on Algorithmic Foundations of Dynamic Networks (SAND 2024).
+Editors: Arnaud Casteigts and Fabian Kuhn; Article No. 20; pp. 20:1–20:17
+Leibniz International Proceedings in Informatics
+Schloss Dagstuhl – Leibniz-Zentrum für Informatik, Dagstuhl Publishing, Germany
+Arbitrary Pattern Formation on Rectangular Grid by Robot Swarm
+inbuilt algorithm determines a destination point. This phase is called the Compute phase.
+Finally, in the Move phase it moves towards the computed destination. These three phases
+together are called a Look-Compute-Move (LCM) cycle of a robot.
+Through collaborative efforts, these robot swarms can accomplish different tasks such as
+gathering at a specific point, configuring into predetermined patterns, navigating networks,
+etc. Presently, the field of robotics research is witnessing significant enthusiasm for swarm
+robots. The inherent decentralized characteristics of these algorithms provide swarm robots
+with a notable advantage, as distributed algorithms are both easily scalable and more resilient
+in the face of errors. Furthermore, swarm robots boast a multitude of real-world applications,
+including but not limited to tasks like area coverage, patrolling, network maintenance, etc.
+In order to accomplish specific tasks, robots require some computational capabilities,
+which can be determined by various factors such as memory, communication, etc. With
+respect to memory and communication, the literature identifies two primary robot models.
+The first one is called the classical OBLOT model. In this model, the robots are devoid of
+persistent memory and communication abilities. Another robot model is the LUMI model
+where the robots are equipped with a finite number of lights that can take a finite number
+of different colors. These colors serve as persistent memory (as a robot can see its own
+color) and communication architecture (as the colors of lights are visible to all other robots).
+The responsibility for activating robots rests with an entity referred to as the Scheduler.
+Within the existing literature, three primary types of schedulers emerge: Fully-Synchronous
+(FSYNC), Semi-Synchronous (SSYNC), and Asynchronous (ASYNC). In the case of fully
+synchronous and semi-synchronous schedulers, time is partitioned into rounds of uniform
+length. The duration of the Look, Compute, and Move phases for all activated robots are
+identical. Under a fully-synchronous scheduler, all robots become active at the onset of each
+round, but in a semi-synchronous setup, not all robots may activate simultaneously in a given
+round. In an asynchronous scheduler, round divisions are absent. At any given moment, a
+robot can be either idle or engaged in any of the Look, Compute, or Move phases. The
+duration of these phases and the spans of robot idleness are finite but unbounded.
+The primary focus of this study is to solve the Arbitrary Pattern Formation (APF)
+problem on an infinite rectangular grid while minimizing spatial utilization. The APF
+problem involves a group of robots situated within an environment, aiming to create a
+designated pattern. This pattern is conveyed to each robot as a set of points within a
+coordinate system as an input. This problem has been extensively studied in the euclidean
+plane ([2, 3, 4, 6, 7, 8, 16, 17]) and also on a continuous circle [13]. Bose et al. [1] first
+proposed this problem on a rectangular grid. The rectangular grid is a natural discretization
+of the plane. To the best of our knowledge, on the discrete domain, this problem has been
+studied in [1, 5, 9, 10, 11, 12, 15]. In this paper, the focus is placed on an environment
+characterized by an infinite rectangular grid. In the upcoming subsection, we delve into the
+reasons behind the introduction of spatial constraint in the context of this problem.
+1.1 Motivation
+In the majority of previous studies, the implementation of this problem on a grid necessitates
+a substantial allocation of space (space of a configuration formed by a set of robots is the
+dimension of the smallest enclosing square of the configuration), even when both the initial
+and target configurations have minimal spatial requirements. This promptly gives rise to a
+lot of problems. To begin with, in the scenario where the grid is of bounded dimensions, it is
+possible that certain patterns cannot be formed, even if robots are initially located within
+the bounded grid and the target pattern could potentially fit within the grid. This limitation
+A. Sharma, S. Ghosh, P. Goswami, and B. Sau 20:3
+arises due to the existence of intermediate configurations that demand a spatial extent that
+cannot be accommodated within the confined grid. Moreover, when the spatial demand
+for an APF algorithm on a grid increases, the count of patterns that can be formed within
+a bounded grid becomes noticeably fewer compared to the count of patterns formable on
+the same grid with a lower space requirement. To be more specific, patterns that are “big
+enough” can not be formed if the space requirement is “big” on a bounded grid. So, the
+requirement of large space compromises better utilization of the space.
+Moreover, even if complete visibility is entertained for theoretical considerations, this
+assumption does not hold practical validity within an unbounded environment. In the context
+of a bounded region, it can be applied with the premise that the environment is finite, and
+the entire environment falls within the visibility range of each robot. However, introducing
+the concept of an infinite grid disrupts this assumption. In situations where the grid lacks
+bounds, it is possible that due to substantial spatial requirements, certain robots might stray
+beyond the visibility range of others. To the best of our knowledge, there remains an absence
+of work that addresses the APF challenge within the constraints of limited visibility, an
+asynchronous scheduler, and the absence of any global coordinate agreement. Thus in this
+paper, the problem of APF on a grid with minimal spatial requirement has been considered.
+1.2 Related Work
+In the discrete setting, the problem is first studied in [1]. Here, the authors solved the problem
+deterministically on an infinite rectangular grid with OBLOT robots in an asynchronous
+scheduler. Later in [5], the authors studied the problem on a regular tessellation graph. In
+[1], authors count the total required moves asymptotically and also give an asymptotic lower
+bound for the move complexity, i.e., total number of moves required to solve the problem. In
+[5], authors did not count the total number of moves required for their proposed algorithm.
+In [9], the authors provided two deterministic algorithms for solving the problem in an
+asynchronous scheduler. The first algorithm of [9] solves the APF problem for the OBLOT
+model. The move complexity of this algorithm matches the asymptotic lower bound given
+in [1]. Thus, this algorithm is asymptotically move-optimal. The second algorithm of [9]
+solves the problem for the LUMI model, and this algorithm is asymptotically move-optimal.
+Further authors showed that the algorithm is time-optimal, i.e., the number of epochs (a
+time interval in which each robot activates at least once) to complete the algorithm is
+asymptotically optimal. In [11], the authors provided a deterministic algorithm for solving
+the problem with opaque (non-transparent) point robots in the LUMI model with an
+asynchronous scheduler assuming one-axis agreement. In [10], the authors proposed two
+randomized algorithms for solving the APF problem in an asynchronous scheduler. The
+second algorithm works for the OBLOT model. This algorithm is asymptotically moveoptimal
+and time-optimal. The randomization in this algorithm is only used to break any
+present symmetry in the initial configuration. If the initial configuration is asymmetric then
+the algorithm is deterministic. The first algorithm works for opaque point robots with the
+LUMI model. This algorithm is also asymptotically move-optimal and time-optimal. In [12],
+the authors solve the problem with opaque fat robots (robots having nontrivial dimension)
+with the LUMI model in an asynchronous scheduler assuming one-axis agreement. In [15],
+the authors provide an asymptotically move-optimal algorithm solving this problem with
+robots in the LUMI model. The work also considered a special requirement and showed that
+the algorithm is space-optimal. In the next section, we formally state the space complexity
+of an algorithm and discuss the space complexity of the mentioned works.
+4 Arbitrary Pattern Formation on Rectangular Grid by Robot Swarm
+1.3 Space Complexity of APF Algorithms in Rectangular Grid
+In [15], the authors considered the total space required to execute an algorithm. In Definition 1,
+we define the space complexity of an algorithm executed by a set of robots on a rectangular
+grid. Before that let’s define the dimension of a rectangle, vertices of which are on some grid
+nodes, as m × n if the rectangle has m horizontal grid lines and n vertical grid lines.
+▶ Definition 1. The space complexity of an algorithm executed by a set of robots on a
+rectangular grid is the minimum dimension of the squares (whose sides are parallel with
+the grid lines) such that no robot steps out of the square throughout the execution of the
+algorithm.
+Let the smallest enclosing rectangle (SER), the sides of which are parallel to grid lines, of
+the initial configuration and pattern configuration formed by the robots, respectively, have
+dimensions m × n (m ≥ n) and m′ × n′ (m′ ≥ n′). Let D = max{m, n,m′, n′}. Then the
+minimum space complexity for an algorithm to solve the APF problem is D. Definition 1
+assigns a real number to the space complexity that makes it easy to compare different APF
+algorithms. But consider an APF algorithm that takes a space enclosed by an axis aligned
+rectangle of dimension p × q. if M = max{m,m′} and N = max{n, n′}, then the APF
+algorithm is better (as far as space is concerned) if p is closer to M and q is closer to N.
+Space Complexity of the Previous APF Algorithms
+(OBLOT model APF algorithms) The algorithm proposed in [1] has space-complexity at
+least 2D in the worst case as one of the leaders, named tail moves far away from the rest of
+the configuration. The first algorithm proposed in [9] is for the OBLOT model. It requires
+the robots to form a compact line. The space complexity of these algorithms is D2 in the
+worst case. The second randomized algorithm in [10] is for the OBLOT model. In this
+algorithm, the leader robot moves upwards far away from the rest of the configuration. Thus,
+it has a space complexity of at least 30D in the worst case.
+(LUMI model APF algorithms) The second algorithm proposed in [9] is for the LUMI
+model. This algorithm requires a step-looking configuration where each robot occupies a
+unique vertical line. Therefore, the space complexity of the algorithm can be D2 in the
+worst case. This algorithm needs each robot to have a light with three distinct colors. The
+first randomized algorithm in [10] for LUMI model has space-complexity at least D + 2.
+The authors also did not count the number of lights and colors required for the robots.
+With a closer look, we observe that this algorithm uses at least 31 distinct colors. Further,
+deterministic APF algorithms proposed in [11, 12] solved it for obstructed visibility. These
+works also need the robots to form a compact line, hence the space complexity of these
+algorithms is D2 in the worst case. The proposed algorithm in [15] has space-complexity
+D + 1 and it requires three distinct colors.
+We say that the first algorithm proposed in [10] and algorithm proposed in [15] are
+almost space-optimal, as the space-complexity is of the form D + c, D is a lower bound of
+the space-complexity and c is a constant independent of D. If we consider the rectangle to
+measure the space, then a rectangle of dimension M × N is minimally required to solve the
+APF problem. The first algorithm in [10] and the algorithm in [15] takes space enclosed by
+rectangle of dimension (M + 2) × (N + 2) and (M + 1) × N respectively. We can consider
+these algorithms as so far the best APF algorithms as far as space complexity is concerned.
+For the rest of the algorithms one dimension of the rectangle that encloses the required space
+shoots up twice (algorithm in [1]) or 30 times (2nd algorithm in [10]) or squares (algorithm
+A. Sharma, S. Ghosh, P. Goswami, and B. Sau 20:5
+in [9, 11, 12]). For the rectangle version, if an APF algorithm takes a space of enclosing
+rectangle of dimension (M + c1) × (N + c2), where c1 and c2 are constants independent of
+M and N, then the algorithm is said to be almost optimal. The challenge of this work is to
+reconfigure the (oblivious and silent) robots in an optimal space avoiding the occurrence of
+symmetric configurations and collision among robots while keeping the number of movements
+asymptotically optimal.
+Our Contribution
+First a deterministic algorithm for solving APF in an infinite discrete line is presented. Then
+exploiting that algorithm this manuscript presents a deterministic algorithm for solving
+APF in an infinite rectangular grid which is almost space-optimal as well as asymptotically
+move-optimal. Precisely, the space complexity for the algorithm is D + 4 and this algorithm
+takes a space enclosing the rectangle of dimension (M + 4) × (N + 1). The move-complexity
+of the algorithm is O(kD)1, where k is the number of robots. The robot model is the classical
+OBLOT model and the scheduler is fully asynchronous. To the best of our knowledge so
+far, this is the first deterministic algorithm solving APF problem in the OBLOT robot
+model that has the least space-complexity and optimal move-complexity (See Table 1 for
+comparison with the previous works). The architecture of the description of the algorithm
+and correctness proof are motivated from [1].
+Table 1 Comparison table.
+Work Model Visibility Deterministic/
+Randomised
+Space
+complexity
+[1] OBLOT Unobstructed Deterministic ≥ 2D
+1st algorithm in [9] OBLOT Unobstructed Deterministic D2
+2nd algorithm in [10] OBLOT Unobstructed Randomised2 ≥ 30D
+2nd algorithm in [9] LUMI Unobstructed Deterministic D2
+1st algorithm in [10] LUMI Obstructed Randomised ≥ D+2
+[11] LUMI Obstructed Deterministic D2
+[12] LUMI Obstructed
+(fat robot)
+Deterministic D2
+[15] LUMI Unobstructed Deterministic D + 1
+Algorithm in this
+work
+OBLOT Unobstructed Deterministic D + 4
+2 Model and Problem Statement
+Robot
+The robots are assumed to be identical, anonymous, autonomous, and homogeneous. Robots
+are oblivious, i.e., they do not have any persistent memory to remember previous configurations
+or past actions. Robots do not have any explicit means of communication with other
+robots. The robots are modeled as points on an infinite rectangular grid graph embedded on
+1 In [10], the authors provides this tight lower bound
+2 The randomisation is only used to break any symmetry present in the initial configuration

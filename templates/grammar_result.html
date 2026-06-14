@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Grammar Result</title>
+    <meta charset="UTF-8">
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+</head>
+
+<body class="bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-white min-h-screen">
+
+    <!-- HEADER -->
+    <div class="text-center py-10">
+        <h1 class="text-4xl font-extrabold text-indigo-400 mb-4">
+            Grammar Analysis Result
+        </h1>
+
+        <div class="flex justify-center gap-6">
+            <div class="bg-green-600 px-6 py-2 rounded-full font-semibold shadow-lg">
+                Grammar Score: {{ 100 - (original_highlighted.count('underline') * 5) if original_highlighted else 100 }}%
+            </div>
+
+            <div class="bg-red-600 px-6 py-2 rounded-full font-semibold shadow-lg">
+                Errors Detected: {{ error_count }}
+            </div>
+        </div>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div class="max-w-6xl mx-auto px-6 pb-16">
+
+        <div class="grid md:grid-cols-2 gap-8">
+
+            <!-- Original Text -->
+            <div class="bg-gray-800 p-8 rounded-2xl shadow-2xl transform hover:scale-105 transition duration-300">
+                <h2 class="text-2xl font-bold text-red-400 mb-6">
+                    Original Text
+                </h2>
+
+                <div class="bg-gray-900 p-6 rounded-xl text-gray-300 whitespace-pre-wrap leading-relaxed text-lg">
+                    {{ original_highlighted|safe }}
+                </div>
+            </div>
+
+            <!-- Corrected Text -->
+            <div class="bg-gray-800 p-8 rounded-2xl shadow-2xl transform hover:scale-105 transition duration-300">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-2xl font-bold text-green-400">
+                        Corrected Version
+                    </h2>
+
+                    <button onclick="copyText()" 
+                        class="bg-indigo-600 hover:bg-indigo-700 px-4 py-2 rounded-lg font-semibold transition">
+                        Copy
+                    </button>
+                </div>
+
+                <div id="correctedText" class="bg-gray-900 p-6 rounded-xl text-gray-300 whitespace-pre-wrap leading-relaxed text-lg">
+                    {{ corrected_text }}
+                </div>
+            </div>
+
+        </div>
+
+        <!-- ACTION BUTTONS -->
+        <div class="mt-12 text-center space-x-6">
+            <a href="/" 
+               class="bg-indigo-600 hover:bg-indigo-700 px-8 py-3 rounded-xl font-semibold shadow-lg transition">
+               Back to Home
+            </a>
+
+            <button onclick="toggleCorrected()" 
+                class="bg-gray-700 hover:bg-gray-600 px-8 py-3 rounded-xl font-semibold shadow-lg transition">
+                Toggle Corrected View
+            </button>
+        </div>
+
+    </div>
+
+    <!-- SCRIPT -->
+    <script>
+        function copyText() {
+            const text = document.getElementById("correctedText").innerText;
+            navigator.clipboard.writeText(text);
+            alert("Corrected text copied!");
+        }
+
+        function toggleCorrected() {
+            const element = document.getElementById("correctedText");
+            if (element.style.display === "none") {
+                element.style.display = "block";
+            } else {
+                element.style.display = "none";
+            }
+        }
+
+        window.onload = function(){
+            const loader = document.getElementById("loader")
+            if(loader){
+                loader.style.display = "none"
+            }
+        }
+    </script>
+
+</body>
+</html>

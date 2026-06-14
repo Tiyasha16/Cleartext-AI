@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Rephrasing Result</title>
+    <meta charset="UTF-8">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+
+<body class="bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-white min-h-screen">
+
+    <div class="text-center py-10">
+        <h1 class="text-4xl font-extrabold text-green-400">
+            AI Rephrasing Results
+        </h1>
+    </div>
+
+    <div class="max-w-6xl mx-auto px-6 pb-16">
+
+        <!-- Original -->
+        <div class="bg-gray-800 p-8 rounded-2xl shadow-xl mb-10">
+            <h2 class="text-xl font-bold text-blue-400 mb-4">Original Text</h2>
+            <p class="text-gray-300 whitespace-pre-wrap">{{ original_text }}</p>
+        </div>
+
+        <!-- Variations -->
+        <div class="grid md:grid-cols-3 gap-6">
+            {% for version in variations %}
+            <div class="bg-gray-800 p-6 rounded-2xl shadow-xl hover:scale-105 transition">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-lg font-semibold text-green-400">
+                        Variation {{ loop.index }}
+                    </h3>
+                    <button onclick="copyText('{{ loop.index }}')" 
+                        class="bg-indigo-600 hover:bg-indigo-700 px-3 py-1 rounded-lg text-sm">
+                        Copy
+                    </button>
+                </div>
+
+                <p id="variation{{ loop.index }}" class="text-gray-300 whitespace-pre-wrap">
+                    {{ version }}
+                </p>
+            </div>
+            {% endfor %}
+        </div>
+
+        <div class="text-center mt-12">
+            <a href="/" class="bg-indigo-600 hover:bg-indigo-700 px-8 py-3 rounded-xl font-semibold">
+                Back to Home
+            </a>
+        </div>
+
+    </div>
+
+    <script>
+        function copyText(index) {
+            const text = document.getElementById("variation" + index).innerText;
+            navigator.clipboard.writeText(text);
+            alert("Copied!");
+        }
+
+        window.onload = function(){
+            const loader = document.getElementById("loader")
+            if(loader){
+                loader.style.display = "none"
+            }
+        }
+    </script>
+
+</body>
+</html>

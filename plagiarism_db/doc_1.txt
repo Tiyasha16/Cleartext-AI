@@ -1,0 +1,187 @@
+Space and Move-Optimal Arbitrary Pattern
+Formation on Infinite Rectangular Grid by
+Oblivious Robot Swarm
+Avisek Sharma #
+Department of Mathematics, Jadavpur University, India
+Satakshi Ghosh #
+Department of Mathematics, Jadavpur University, India
+Pritam Goswami #
+Department of Mathematics, Jadavpur University, India
+Buddhadeb Sau #
+Department of Mathematics, Jadavpur University, India
+Abstract
+Arbitrary Pattern Formation (APF) is a fundamental coordination problem in swarm robotics. It
+requires a set of autonomous robots (mobile computing units) to form an arbitrary pattern (given as
+input) starting from any initial pattern. This problem has been extensively investigated in continuous
+and discrete scenarios, with this study focusing on the discrete variant. A set of robots is placed on
+the nodes of an infinite rectangular grid graph embedded in the euclidean plane. The movements of
+each robot is restricted to one of the four neighboring grid nodes from its current position. The robots
+are autonomous, anonymous, identical, and homogeneous, and operate Look-Compute-Move cycles.
+In this work, we adopt the classical OBLOT robot model, meaning the robots have no persistent
+memory or explicit communication methods, yet they possess full and unobstructed visibility. This
+work proposes an algorithm that solves the APF problem in a fully asynchronous scheduler assuming
+the initial configuration is asymmetric. The considered performance measures of the algorithm are
+space and number of moves required for the robots. The algorithm is asymptotically move-optimal.
+Here, we provide a definition of space complexity that takes the visibility issue into consideration.
+We observe an obvious lower bound D of the space complexity and show that the proposed algorithm
+has the space complexity D + 4. On comparing with previous related works, we show that this is
+the first proposed algorithm considering OBLOT robot model that is asymptotically move-optimal
+and has the least space complexity which is almost optimal.
+2012 ACM Subject Classification Theory of computation → Distributed algorithms
+Keywords and phrases Distributed algorithms, Oblivious robots, Optimal algorithms, Swarm
+robotics, Space optimization, and Rectangular grid
+Digital Object Identifier 10.4230/LIPIcs.SAND.2024.20
+Related Version Full Version: https://doi.org/10.48550/arXiv.2309.11190 [14]
+Funding The first and the third authors are supported by the University Grants Commission (UGC),
+India. The second author is supported by the West Bengal State Government Fellowship Scheme.
+The fourth author is supported by the Science and Engineering Research Board (SERB), India
+1 Introduction
+Swarm robotics involves a group of simple computing units referred to as robots that operate
+autonomously without having any centralized control. Moreover, the robots are generally
+anonymous (no unique identifier), homogeneous (all robots execute the same algorithm), and
+identical (physically indistinguishable). Generally on activation, a robot first takes a snapshot
+of its surroundings. This phase is called the Look phase. Then based on the snapshot an
+© Avisek Sharma, Satakshi Ghosh, Pritam Goswami, and Buddhadeb Sau;
+licensed under Creative Commons License CC-BY 4.0
+3rd Symposium on Algorithmic Foundations of Dynamic Networks (SAND 2024).
+Editors: Arnaud Casteigts and Fabian Kuhn; Article No. 20; pp. 20:1–20:17
+Leibniz International Proceedings in Informatics
+Schloss Dagstuhl – Leibniz-Zentrum für Informatik, Dagstuhl Publishing, Germany
+A. Sharma, S. Ghosh, P. Goswami, and B. Sau 20:3
+arises due to the existence of intermediate configurations that demand a spatial extent that
+cannot be accommodated within the confined grid. Moreover, when the spatial demand
+for an APF algorithm on a grid increases, the count of patterns that can be formed within
+a bounded grid becomes noticeably fewer compared to the count of patterns formable on
+the same grid with a lower space requirement. To be more specific, patterns that are “big
+enough” can not be formed if the space requirement is “big” on a bounded grid. So, the
+requirement of large space compromises better utilization of the space.
+Moreover, even if complete visibility is entertained for theoretical considerations, this
+assumption does not hold practical validity within an unbounded environment. In the context
+of a bounded region, it can be applied with the premise that the environment is finite, and
+the entire environment falls within the visibility range of each robot. However, introducing
+the concept of an infinite grid disrupts this assumption. In situations where the grid lacks
+bounds, it is possible that due to substantial spatial requirements, certain robots might stray
+beyond the visibility range of others. To the best of our knowledge, there remains an absence
+of work that addresses the APF challenge within the constraints of limited visibility, an
+asynchronous scheduler, and the absence of any global coordinate agreement. Thus in this
+paper, the problem of APF on a grid with minimal spatial requirement has been considered.
+1.2 Related Work
+In the discrete setting, the problem is first studied in [1]. Here, the authors solved the problem
+deterministically on an infinite rectangular grid with OBLOT robots in an asynchronous
+scheduler. Later in [5], the authors studied the problem on a regular tessellation graph. In
+[1], authors count the total required moves asymptotically and also give an asymptotic lower
+bound for the move complexity, i.e., total number of moves required to solve the problem. In
+[5], authors did not count the total number of moves required for their proposed algorithm.
+In [9], the authors provided two deterministic algorithms for solving the problem in an
+asynchronous scheduler. The first algorithm of [9] solves the APF problem for the OBLOT
+model. The move complexity of this algorithm matches the asymptotic lower bound given
+in [1]. Thus, this algorithm is asymptotically move-optimal. The second algorithm of [9]
+solves the problem for the LUMI model, and this algorithm is asymptotically move-optimal.
+Further authors showed that the algorithm is time-optimal, i.e., the number of epochs (a
+time interval in which each robot activates at least once) to complete the algorithm is
+asymptotically optimal. In [11], the authors provided a deterministic algorithm for solving
+the problem with opaque (non-transparent) point robots in the LUMI model with an
+asynchronous scheduler assuming one-axis agreement. In [10], the authors proposed two
+randomized algorithms for solving the APF problem in an asynchronous scheduler. The
+second algorithm works for the OBLOT model. This algorithm is asymptotically moveoptimal
+and time-optimal. The randomization in this algorithm is only used to break any
+present symmetry in the initial configuration. If the initial configuration is asymmetric then
+the algorithm is deterministic. The first algorithm works for opaque point robots with the
+LUMI model. This algorithm is also asymptotically move-optimal and time-optimal. In [12],
+the authors solve the problem with opaque fat robots (robots having nontrivial dimension)
+with the LUMI model in an asynchronous scheduler assuming one-axis agreement. In [15],
+the authors provide an asymptotically move-optimal algorithm solving this problem with
+robots in the LUMI model. The work also considered a special requirement and showed that
+the algorithm is space-optimal. In the next section, we formally state the space complexity
+of an algorithm and discuss the space complexity of the mentioned works.
+A. Sharma, S. Ghosh, P. Goswami, and B. Sau 20:7
+Problem Statement
+Suppose a swarm of robots is placed in an infinite rectangle grid such that no two robots
+are on the same grid node and the configuration formed by the robots is asymmetric. The
+Arbitrary Pattern Formation (APF) problem asks to design a distributed deterministic
+algorithm following which the robots autonomously can form any arbitrary but specific
+(target) pattern, which is provided to the robots as an input, without scaling it. The target
+pattern is given to the robots as a set of vertices in the grid with respect to a cartesian
+coordinate system. We assume that the number of vertices in the target pattern is the same
+as the number of robots present in the configuration. The pattern is considered to be formed
+if a configuration is formed and that is the same with target pattern up to translations,
+rotations, and reflections. The algorithm should be collision-free, i.e., no two robots should
+occupy the same node at any time, and two robots must not cross each other through the
+same edge.
+Admissible Initial Configurations
+We assume that in the initial configuration there is no multiplicity point, i.e., no grid node
+that is occupied by multiple robots. This assumption is necessary because all robots run
+the same deterministic algorithm, and two robots located at the same point have the same
+view. Thus, it is deterministically impossible to separate them afterward. Next, suppose the
+initial configuration has a reflectional symmetry with no robot on the axis of symmetry or
+a rotational symmetry with no robot on the point of rotation. Then it can be shown that
+no deterministic algorithm can form an asymmetric target configuration from this initial
+configuration. However, if the initial configuration has reflectional symmetry with some
+robots on the axis of symmetry or rotational symmetry with a robot at the point of rotation,
+then symmetry may be broken by a specific move of such robots. But making such a move
+may not be very easy as the robots’ moves are restricted to their adjacent grid nodes only.
+In this work, we assume the initial configuration to be asymmetric.
+3 Space-optimal Arbitrary Pattern Formation on a Grid Line
+In this section, we solve this problem on a discrete straight line. Suppose we have an infinite
+path graph P = {(i, i + 1) | i ∈ Z} embedded on a straight line. Suppose k robots are placed
+on P at distinct nodes. A configuration is defined similarly as done in the previous section
+by considering G = P. The target pattern is given as a set of k distinct positive integers.
+Leader Election and Global Coordinate Setup
+We assume the initial configuration of robots does not have reflectional symmetry. First, we
+set up a global coordinate system that can be agreed upon by all the robots. Suppose C is a
+configuration having no reflectional symmetry. For a configuration, we define the smallest
+enclosing line segment (SEL) to be the smallest line segment in length that contains all the
+robots in the configuration. Let L = AB be the SEL of the configuration C. Consider two
+binary strings of length |AB| (the length of a line segment is the number of grid points on
+the line segment) called λA and λB with respect to the endpoints of L. Let λA = {ai}|AB|
+i=1
+such that ai = 1 if and only if the node on the AB line segment having distance i − 1 from
+A is occupied by a robot. Similarly, we define λB. Since C has no reflectional symmetry,
+λA and λB are different. Therefore one of them is lexicographically smaller than the other.
+20:10 Arbitrary Pattern Formation on Rectangular Grid by Robot Swarm
+If C is asymmetric then a unique string can be elected and hence, all robots can agree
+on a global coordinate system. By “up” (“down”) and “right” (“left”), we shall refer to the
+positive (“negative”) directions of the x-axis and y-axis of the coordinate system, respectively.
+The robot responsible for the first 1 in this string is considered the head robot of C and the
+robot responsible for the last 1 is considered the tail of C. The robot other than the head
+and tail is termed the inner robot. We define, C′ = C \ {tail} and C′′ = C \ {head, tail}.
+Target Pattern Embedding
+Here we discuss how robots are supposed to embed the target pattern when they agree on
+a global coordinate system. The target configuration Ctarget is given with respect to some
+arbitrary coordinate system. Let the R′ = A′B′C′D′ be the SER of the target pattern, an
+m′ × n′ rectangle with |A′D′| ≥ |A′B′| > 1. We associate binary strings similarly for R′ as
+done for R. Let λA′B′ be the lexicographically largest (but may not be unique because the
+Ctarget can be symmetric) among all other strings for R′. The first target position on this
+string λA′B′ is said to be head-target and denoted as htarget and the last target position is
+said to be tail-target and denoted as ttarget. The rest of the target positions are called inner
+target positions. Then the target pattern is to be embedded such that A′ is the origin, −−−→
+A′B′
+direction is along the positive x-axis, and −−−→
+A′D′ direction is along the positive y-axis. Next,
+let us consider the case when |A′B′| = 1, that is when the SER of the target pattern is a line
+A′D′. Let λA′D′ be the lexicographically largest string between λA′D′ and λD′A′ . Then the
+target is embedded in such a way that A′ is at the origin and −−−→
+A′D′ direction is along the
+positive y-axis. The positive x-axis direction can be decided randomly by the robot which
+first moves out of that line making the SER a rectangle. We define, C′
+target = Ctarget \{ttarget}
+and C′′
+target = Ctarget \ {htarget, ttarget}.
+4.2 Outline of the Proposed Algorithm
+The algorithm is logically divided into seven phases3. A robot infers which phase it is in from
+the configuration visible at that time. It does so by checking which conditions in Table 2
+are fulfilled. We assume that in a visible configuration, no robot is seen on an edge. We
+maintain such assumption by an additional condition that, if a robot sees a configuration
+where a robot is on an edge then discard the snapshot and go to sleep.
+A Preview of the Algorithm
+Firstly the tail robot moves upwards to reach a horizontal line such that neither the
+horizontal line nor other horizontal lines above it contain any robot or target position
+(Phase I).
+Next the head robot moves left to reach the origin (Phase II).
+Then the tail robot moves a few steps upwards to remove the chance of occurrence of
+symmetry during the later inner robot movements (phase I).
+Then the tail robot moves rightwards to reach a vertical line such that neither the
+vertical line nor any vertical line to the right of it contains any robot or target positions
+(Phase III).
+3 The phases are assigned numerical names, yet the sequence of these numerals doesn’t precisely correspond
+to the sequence of their execution during algorithm execution.

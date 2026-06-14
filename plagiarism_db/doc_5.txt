@@ -1,0 +1,7 @@
+Swarm robotics involves a group of simple computing units referred to as robots that operate
+autonomously without having any centralized control. Moreover, the robots are generally
+anonymous (no unique identifier), homogeneous (all robots execute the same algorithm), and
+identical (physically indistinguishable). Generally on activation, a robot first takes a snapshot
+of its surroundings. This phase is called the Look phase. Then based on the snapshot an
+© Avisek Sharma, Satakshi Ghosh, Pritam Goswami, and Buddhadeb Sau;
+licensed under Creative Commons License CC-BY 4.0
